@@ -1,0 +1,6 @@
+TODO List
+Explore options for importing data / how far back data will be scraped from
+Work on layout for GUI
+Ensure all price calculations are accurate
+Work on algorithim for exporting data as csv
+Work on getting program to reload smoothly so this process can be run repeatedly
