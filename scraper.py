@@ -17,15 +17,20 @@ def import_table():
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
     table = soup.find('div', {'class': 'cmc-tab-historical-data ctxmt9-0 ASvFA'})
     rows = table.find_all('tr')
-    for row in rows:
-        print(row.text,' ')
-        find_date = row.find_all('td', {'class': 'cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left'})
-        print(len(find_date))
-        """date_finder = find_date.find('div')
-        print(date_finder.text)
-        for items in row:
-            print(items.text)"""
-    return table
+    global list_of_dates
 
+
+    for row in rows:
+        #print(row.text,' ')
+        #find_date = row.find_all('td', {'class': 'cmc-table__cell cmc-table__cell--sticky cmc-table__cell--left'})
+        list_of_dates.append(row.text)
+        print(row.text)
+
+    return table
+#expiramenting how I want to break up the rows of data into appropriate strings
 import_table()
+print(list_of_dates)
+print(len(list_of_dates))
+seperated_dates = list_of_dates[3]#[2:5]
+print(seperated_dates)
 
