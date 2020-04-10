@@ -45,5 +45,6 @@ def extract_close_prices(list_to_review):
 import_table()
 #print(cells_in_table)
 extract_close_prices(cells_in_table)
-print(list_dates)
-print(list_close_price)
+#print(list_dates)
+#print(list_close_price)
+
