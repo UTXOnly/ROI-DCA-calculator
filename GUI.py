@@ -7,7 +7,7 @@ window = tk.Tk()
 def date_button():
     user_date = entry_for_date.get()
     return user_date
-    print(user_date)
+
 
 
 
