@@ -1,7 +1,10 @@
 TODO List
 Explore options for importing data / how far back data will be scraped from
 Continue experimenting with other libraries for webscraping
+    -Beautiful Soup and Requests are working just fine for scaping data
 Work on layout for GUI
+    -decided to go with grid layout as opposed to pack method
 Ensure all price calculations are accurate
 Work on algorithm for exporting data as csv
 Work on getting program to reload smoothly so this process can be run repeatedly
+Continue working on method to parse data from the rows of the html table
