@@ -5,12 +5,26 @@ window = tk.Tk()
 
 # Functions
 def date_button():
+    global format_date
     user_date = entry_for_date.get()
-    print(user_date)
-    return user_date
+    months = [ 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ]
+    month_digits = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' ]
+    month_seg = user_date[0:2]
+
+    date_seg = user_date[3:5]
+    year_seg = user_date[6:10]
+    """print(date_seg)
+    print(year_seg)"""
+
+    place_holder = month_digits.index(month_seg)
+    month_code = months[place_holder]
+    format_date = '{} {}, {}'.format(month_code, date_seg, year_seg)
+    return format_date
+
 
 def USD_button():
     USD_amount = entry_for_USD.get()
+    print(USD_amount)
     return USD_amount
 
 
@@ -21,7 +35,7 @@ def USD_button():
 greeting = tk.Label(text = "Welcome to Bitcoin ROI/DCA calculator")
 
 date_label = tk.Label(
-    text = "Please enter a past date you would like to buy Bitcoin on\n" "ex. April 6, 2020",
+    text = "Please enter a past date you would like to buy Bitcoin on\n" "MM/DD/YY",
     fg = "white",
     bg = "black",
     width =50,

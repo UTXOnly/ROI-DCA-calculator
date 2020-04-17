@@ -2,10 +2,13 @@ import bs4
 import requests
 from bs4 import BeautifulSoup
 import time
+from GUI import *
 
 rows_in_table = []
 cells_in_table = []
+dates = []
 sliced_close_price = []
+#imported_button_func =
 
 
 def parsePrice():
@@ -34,17 +37,31 @@ def import_table():
 
 
 def extract_close_prices(list_to_review):
-    global list_dates, list_close_price
+    global list_dates, list_close_price, dates, sliced_close_price
     list_dates = list_to_review[0:-1:7]
-    #print(list_dates)
+
+    dates.append(list_dates)
     list_close_price = list_to_review[4:-1:7]
-    #print(list_close_price)
+    sliced_close_price.append(list_close_price)
+
+
     return list_dates, list_close_price
 
-#expirementing how I want to break up the rows of data into appropriate strings
-import_table()
-#print(cells_in_table)
-extract_close_prices(cells_in_table)
-#print(list_dates)
-#print(list_close_price)
+def append_master_lists():
+    global list_dates, list_close_price
+    for date in list_dates:
+        dates.append(date)
+    for price in list_close_price:
+        sliced_close_price.append(price)
 
+#def find_indices(date, sliced_close):
+
+
+
+
+import_table()
+
+extract_close_prices(cells_in_table)
+append_master_lists()
+formatted_date = date_button()
+print(formatted_date)
