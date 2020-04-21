@@ -63,5 +63,6 @@ import_table()
 
 extract_close_prices(cells_in_table)
 append_master_lists()
-formatted_date = date_button()
-print(formatted_date)
+
+#formatted_date = date_button()
+#print(formatted_date)

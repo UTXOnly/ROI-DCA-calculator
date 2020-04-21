@@ -1,7 +1,12 @@
 import tkinter as tk
 window = tk.Tk()
 
+class UserEntry:
+    def __init__(self):
+        self.date = 0
+        self.price = 0
 
+user_entry1 = UserEntry()
 
 # Functions
 def date_button():
@@ -19,7 +24,12 @@ def date_button():
     place_holder = month_digits.index(month_seg)
     month_code = months[place_holder]
     format_date = '{} {}, {}'.format(month_code, date_seg, year_seg)
-    return format_date
+
+    user_entry1.date = format_date
+    #print(format_date)
+    return format_date, user_entry1
+
+
 
 
 def USD_button():
@@ -73,5 +83,10 @@ button_for_date.grid(row = 2, column = 1)
 usd_amt_label.grid(row = 3, column = 0)
 entry_for_USD.grid(row = 4, column = 0)
 button_for_USD.grid(row = 4, column = 1)
+
+
+
+
+
 
 window.mainloop()
