@@ -2,11 +2,32 @@ import tkinter as tk
 window = tk.Tk()
 
 class UserEntry:
-    def __init__(self):
+    def __init__(self, date, price, entry_num):
         self.date = 0
         self.price = 0
+        self.entry_num = 0
 
-user_entry1 = UserEntry()
+list_user_entry = {}
+
+entry_list = []
+
+
+
+
+
+
+
+
+
+class Counter:
+    def __init__(self):
+        self.count = 0
+
+class Price:
+    def __init__(self):
+        self.price = 0
+
+test_counter = Counter()
 
 # Functions
 def date_button():
@@ -23,27 +44,39 @@ def date_button():
     place_holder = month_digits.index(month_seg)
     month_code = months[place_holder]
     format_date = '{} {}, {}'.format(month_code, date_seg, year_seg)
+    test_counter.count +=1
+    entry_num = 'Entry number {}'.format(test_counter.count)
+    if format_date in dates:
+        date_index = dates.index(format_date)
+        matching_price =  sliced_close_price[date_index]
+        list_user_entry.update({format_date:matching_price})
 
 
-    test_for_date(format_date)
+
+
+    test_for_date(format_date, entry_num)
+
+def test_for_date(date_string, entry_name):
+        name_for = entry_name
+        global entry_num
+        if date_string in dates:
+            date_index = dates.index(date_string)
+            matching_price = sliced_close_price[date_index]
+            list_user_entry.update({date_string: matching_price})
+            name_for = UserEntry(date_string,matching_price,entry_name)
+            print(name_for)
 
 
 
-def test_for_date(date_string):
-    if date_string in dates:
-        user_entry1.date = date_string
-        date_index = dates.index(date_string)
-        matching_price = sliced_close_price[date_index]
-        print(matching_price)
+
+
+
 
 #def capture_price(entry_value):
 
 
 
-def USD_button():
-    USD_amount = entry_usd.get()
-    print(USD_amount)
-    return USD_amount
+
 
 
 
@@ -69,7 +102,7 @@ entry_for_date = tk.Entry(
 
 
 button_for_date = tk.Button(text = "Enter", command = date_button)
-button_for_USD = tk.Button(text = "Enter", command= USD_button)
+#button_for_USD = tk.Button(text = "Enter", command= USD_button)
 
 usd_amt_label = tk.Label(
     text = "Please enter a dollar amount you would like to invest",
@@ -78,7 +111,7 @@ usd_amt_label = tk.Label(
     width = 50,
     height = 3,
 )
-entry_usd = tk.StringVar
+entry_usd = tk.IntVar()
 
 entry_for_USD = tk.Entry(
     textvariable = entry_usd,
@@ -94,7 +127,7 @@ entry_for_date.grid(row = 2, column =0)
 button_for_date.grid(row = 2, column = 1)
 usd_amt_label.grid(row = 3, column = 0)
 entry_for_USD.grid(row = 4, column = 0)
-button_for_USD.grid(row = 4, column = 1)
+#button_for_USD.grid(row = 4, column = 1)
 
 import bs4
 import requests
@@ -152,6 +185,14 @@ def append_master_lists():
     for price in list_close_price:
         sliced_close_price.append(price)
 
+def create_entry_list():
+    count = 0
+    for entry in len(dates):
+        count += 1
+        cated = 'entry number {}'.format(count)
+        entry_list.append(cated)
+
+create_entry_list()
 
 
 
