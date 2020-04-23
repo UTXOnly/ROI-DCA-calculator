@@ -12,8 +12,11 @@ class UserEntry:
         return ('{} : {} : {} : {}'.format(self.entry_num,self.date, self.price, self.invest_amt))
 
     def calculations(self):
-        past_purchase_amt = float(self.invest_amt) / self.price
-        return past_purchase_amt
+        amt_of_BTC = float('{:.8f}'.format(float(self.invest_amt) / self.price))
+        current_value_of_investment = float('{:.2f}'.format(amt_of_BTC * self.current_price))
+        self.btc_amt = amt_of_BTC
+        self.current_value = current_value_of_investment
+        return amt_of_BTC, current_value_of_investment
 
 
 entry_list = []
@@ -179,8 +182,15 @@ def get_current_price():
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
     # price = soup.find('div', {'class': 'cmc-details-panel-price__price'})
     price = soup.find('div', {'class': 'cmc-details-panel-price jta9t4-0 fcilTk'}).find('span').text
-    chopped = price[1] + price[3:9]
-    return chopped
+    almost_finished_price = ''
+    for char in price:
+        if char.isdigit() == True:
+            almost_finished_price += char
+    finished_price = float(almost_finished_price) // 100
+    return finished_price
+
+
+
 
 
 
