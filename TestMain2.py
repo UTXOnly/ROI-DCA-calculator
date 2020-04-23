@@ -18,6 +18,11 @@ class UserEntry:
         self.current_value = current_value_of_investment
         return amt_of_BTC, current_value_of_investment
 
+    def calc_roi(self):
+        self.netprofit = self.current_value - self.invest_amt
+        self.roi = float('{:.2f}'.format((self.netprofit / self.invest_amt) * 100))
+        return self.roi
+
 
 entry_list = []
 
@@ -33,9 +38,6 @@ class Counter:
     def __init__(self):
         self.count = 0
 
-class Price:
-    def __init__(self):
-        self.price = 0
 
 test_counter = Counter()
 
@@ -67,6 +69,17 @@ def date_button():
     print(entry_list[(test_counter.count -1)].invest_amt)
     #print(sliced_close_price)
     print(entry_list[(test_counter.count -1)].calculations())
+    print(entry_list[(test_counter.count - 1)].calc_roi())
+
+    results_label = tk.Label(
+        text = entry_list[(test_counter.count - 1)].calc_roi(),
+        fg = "white",
+        bg = "black",
+        width=50,
+        height=3
+
+    )
+    results_label.grid(row = 5, column = 0)
 
 
 
@@ -116,6 +129,7 @@ entry_for_date.grid(row = 2, column =0)
 button_for_date.grid(row = 2, column = 1)
 usd_amt_label.grid(row = 3, column = 0)
 entry_for_USD.grid(row = 4, column = 0)
+
 #button_for_USD.grid(row = 4, column = 1)
 
 import bs4
