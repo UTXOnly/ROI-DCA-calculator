@@ -2,16 +2,18 @@ import tkinter as tk
 window = tk.Tk()
 
 class UserEntry:
-    def __init__(self, date, price, entry_num, current_price):
+    def __init__(self, date, price, entry_num, current_price, USD_amt):
         self.date = date
         self.price = price
         self.entry_num = entry_num
         self.current_price = current_price
+        self.invest_amt = USD_amt
     def __str__(self):
-        return ('{} : {} : {}'.format(self.entry_num,self.date, self.price))
+        return ('{} : {} : {} : {}'.format(self.entry_num,self.date, self.price, self.invest_amt))
 
     def calculations(self):
-        past_exchange = self.price / 1
+        past_purchase_amt = float(self.invest_amt) / self.price
+        return past_purchase_amt
 
 
 entry_list = []
@@ -52,12 +54,16 @@ def date_button():
     test_counter.count +=1
     entry_num = 'Entry number {}'.format(test_counter.count)
     current = get_current_price()
+    investment = entry_usd.get()
     if format_date in dates:
         date_index = dates.index(format_date)
         matching_price = sliced_close_price[date_index]
-        entry_list.append(UserEntry(format_date, matching_price, entry_num, current))
-    print(entry_list)
-    print(entry_list[0].price)
+        entry_list.append(UserEntry(format_date, matching_price, entry_num, current, investment))
+
+    print(entry_list[(test_counter.count - 1)].price)
+    print(entry_list[(test_counter.count -1)].invest_amt)
+    #print(sliced_close_price)
+    print(entry_list[(test_counter.count -1)].calculations())
 
 
 
@@ -153,7 +159,6 @@ def extract_close_prices(list_to_review):
 
     dates.append(list_dates)
     list_close_price = list_to_review[4:-1:7]
-    sliced_close_price.append(list_close_price)
 
 
     return list_dates, list_close_price
@@ -163,7 +168,10 @@ def append_master_lists():
     for date in list_dates:
         dates.append(date)
     for price in list_close_price:
-        sliced_close_price.append(price)
+        split = price.split(',')
+        joined = split[0] + split[1]
+        price_float = float(joined)
+        sliced_close_price.append(price_float)
 
 
 def get_current_price():
