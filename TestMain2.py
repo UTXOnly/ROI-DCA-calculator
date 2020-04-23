@@ -2,12 +2,17 @@ import tkinter as tk
 window = tk.Tk()
 
 class UserEntry:
-    def __init__(self, date, price, entry_num):
-        self.date = 0
-        self.price = 0
-        self.entry_num = 0
+    def __init__(self, date, price, entry_num, current_price):
+        self.date = date
+        self.price = price
+        self.entry_num = entry_num
+        self.current_price = current_price
+    def __str__(self):
+        return ('{} : {} : {}'.format(self.entry_num,self.date, self.price))
 
-list_user_entry = {}
+    def calculations(self):
+        past_exchange = self.price / 1
+
 
 entry_list = []
 
@@ -46,38 +51,13 @@ def date_button():
     format_date = '{} {}, {}'.format(month_code, date_seg, year_seg)
     test_counter.count +=1
     entry_num = 'Entry number {}'.format(test_counter.count)
+    current = get_current_price()
     if format_date in dates:
         date_index = dates.index(format_date)
-        matching_price =  sliced_close_price[date_index]
-        list_user_entry.update({format_date:matching_price})
-
-
-
-
-    test_for_date(format_date, entry_num)
-
-def test_for_date(date_string, entry_name):
-        name_for = entry_name
-        global entry_num
-        if date_string in dates:
-            date_index = dates.index(date_string)
-            matching_price = sliced_close_price[date_index]
-            list_user_entry.update({date_string: matching_price})
-            name_for = UserEntry(date_string,matching_price,entry_name)
-            print(name_for)
-
-
-
-
-
-
-
-#def capture_price(entry_value):
-
-
-
-
-
+        matching_price = sliced_close_price[date_index]
+        entry_list.append(UserEntry(format_date, matching_price, entry_num, current))
+    print(entry_list)
+    print(entry_list[0].price)
 
 
 
@@ -185,14 +165,19 @@ def append_master_lists():
     for price in list_close_price:
         sliced_close_price.append(price)
 
-def create_entry_list():
-    count = 0
-    for entry in len(dates):
-        count += 1
-        cated = 'entry number {}'.format(count)
-        entry_list.append(cated)
 
-create_entry_list()
+def get_current_price():
+    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/')
+    soup = bs4.BeautifulSoup(r.text, features="html.parser")
+    # price = soup.find('div', {'class': 'cmc-details-panel-price__price'})
+    price = soup.find('div', {'class': 'cmc-details-panel-price jta9t4-0 fcilTk'}).find('span').text
+    chopped = price[1] + price[3:9]
+    return chopped
+
+
+
+
+
 
 
 
@@ -202,6 +187,7 @@ import_table()
 
 extract_close_prices(cells_in_table)
 append_master_lists()
+
 
 
 
