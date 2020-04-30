@@ -8,6 +8,7 @@ class UserEntry:
         self.entry_num = entry_num
         self.current_price = current_price
         self.invest_amt = USD_amt
+
     def __str__(self):
         return ('{} : {} : {} : {}'.format(self.entry_num,self.date, self.price, self.invest_amt))
 
@@ -21,15 +22,21 @@ class UserEntry:
     def calc_roi(self):
         self.netprofit = self.current_value - self.invest_amt
         self.roi = float('{:.2f}'.format((self.netprofit / self.invest_amt) * 100))
-        return self.roi
+        return self.roi, self.netprofit
 
 
 entry_list = []
+sum_of_investment = 0
 
 
 
+def dca():
+    for entry in entry_list:
+        global sum_of_investment
+        sum_of_investment += entry.invest_amt
+        print(sum_of_investment)
 
-
+dca_button = tk.Button(text = "calculate", command = dca)
 
 
 
@@ -72,7 +79,7 @@ def date_button():
     print(entry_list[(test_counter.count - 1)].calc_roi())
 
     results_label = tk.Label(
-        text = entry_list[(test_counter.count - 1)].calc_roi(),
+        text = '{}% Return on Investment\n ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0], entry_list[(test_counter.count - 1)].calc_roi()[1]),
         fg = "white",
         bg = "black",
         width=50,
@@ -80,8 +87,16 @@ def date_button():
 
     )
     results_label.grid(row = 5, column = 0)
+    results_summary = tk.Label(
+        text = 'If you invested {} on {},\n that would buy you {} Bitcoin'.format(entry_list[(test_counter.count -1)].invest_amt,
+        entry_list[(test_counter.count -1)].date ,entry_list[(test_counter.count -1)].calculations()[0]),
+        fg="white",
+        bg="black",
+        width=50,
+        height=5
+    )
 
-
+    results_summary.grid(row= 1, column = 4)
 
 
 # Wigets
@@ -103,8 +118,8 @@ entry_for_date = tk.Entry(
     width = 30)
 
 
-button_for_date = tk.Button(text = "Enter", command = date_button)
-#button_for_USD = tk.Button(text = "Enter", command= USD_button)
+button_for_date = tk.Button(text = "Calculate", command = date_button)
+
 
 usd_amt_label = tk.Label(
     text = "Please enter a dollar amount you would like to invest",
@@ -126,9 +141,10 @@ entry_for_USD = tk.Entry(
 greeting.grid(row = 0, column = 0)
 date_label.grid(row = 1, column = 0)
 entry_for_date.grid(row = 2, column =0)
-button_for_date.grid(row = 2, column = 1)
+button_for_date.grid(row = 3, column = 1)
 usd_amt_label.grid(row = 3, column = 0)
 entry_for_USD.grid(row = 4, column = 0)
+dca_button.grid(row= 4, column = 1)
 
 #button_for_USD.grid(row = 4, column = 1)
 
@@ -142,7 +158,7 @@ rows_in_table = []
 cells_in_table = []
 dates = []
 sliced_close_price = []
-#imported_button_func =
+
 
 
 def parsePrice():
