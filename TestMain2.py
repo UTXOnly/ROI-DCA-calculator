@@ -36,7 +36,7 @@ def dca():
         sum_of_investment += entry.invest_amt
         print(sum_of_investment)
 
-dca_button = tk.Button(text = "calculate", command = dca)
+dca_button = tk.Button(text = "DCA", command = dca)
 
 
 
@@ -86,7 +86,7 @@ def date_button():
         height=3
 
     )
-    results_label.grid(row = 5, column = 0)
+    results_label.grid(row = 6, column = 0)
     results_summary = tk.Label(
         text = 'If you invested {} on {},\n that would buy you {} Bitcoin'.format(entry_list[(test_counter.count -1)].invest_amt,
         entry_list[(test_counter.count -1)].date ,entry_list[(test_counter.count -1)].calculations()[0]),
@@ -96,7 +96,7 @@ def date_button():
         height=5
     )
 
-    results_summary.grid(row= 1, column = 4)
+    results_summary.grid(row= 5, column = 0)
 
 
 # Wigets
@@ -169,7 +169,7 @@ def parsePrice():
     return price
 
 def import_table():
-    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/')
+    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20200201&end=20200501')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
     table = soup.find('div', {'class': 'cmc-tab-historical-data ctxmt9-0 ASvFA'})
     rows = table.find_all('tr')
@@ -191,7 +191,9 @@ def extract_close_prices(list_to_review):
     list_dates = list_to_review[0:-1:7]
 
     dates.append(list_dates)
+    print(len(list_to_review))
     list_close_price = list_to_review[4:-1:7]
+    print(list_close_price)
 
 
     return list_dates, list_close_price

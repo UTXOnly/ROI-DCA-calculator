@@ -19,7 +19,7 @@ def parsePrice():
     return price
 
 def import_table():
-    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/')
+    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20130428&end=20200501')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
     table = soup.find('div', {'class': 'cmc-tab-historical-data ctxmt9-0 ASvFA'})
     rows = table.find_all('tr')
