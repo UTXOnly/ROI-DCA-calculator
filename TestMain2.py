@@ -27,16 +27,24 @@ class UserEntry:
 
 entry_list = []
 sum_of_investment = 0
+current_value_investment = 0
 
 
 
 def dca():
-    for entry in entry_list:
-        global sum_of_investment
-        sum_of_investment += entry.invest_amt
-        print(sum_of_investment)
+    if len(entry_list) > 1 :
+        for entry in entry_list:
+            global sum_of_investment, current_value_investment
+            sum_of_investment += entry.invest_amt
+            current_value_investment += entry.current_value
+            dca_label = tk.Label( text = 'The sum of your investments is ${}\n Which would now be worth ${}'.format(sum_of_investment, current_value_investment),
+            fg="white",
+            bg="black",
+            width=50,
+            height=5 )
+            dca_label.grid(row = 5, column = 1)
 
-dca_button = tk.Button(text = "DCA", command = dca)
+dca_button = tk.Button(text = "Calculate DCA Amount", command = dca)
 
 
 
@@ -88,7 +96,7 @@ def date_button():
     )
     results_label.grid(row = 6, column = 0)
     results_summary = tk.Label(
-        text = 'If you invested {} on {},\n that would buy you {} Bitcoin'.format(entry_list[(test_counter.count -1)].invest_amt,
+        text = 'If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(entry_list[(test_counter.count -1)].invest_amt,
         entry_list[(test_counter.count -1)].date ,entry_list[(test_counter.count -1)].calculations()[0]),
         fg="white",
         bg="black",
@@ -103,7 +111,7 @@ def date_button():
 greeting = tk.Label(text = "Welcome to Bitcoin ROI/DCA calculator")
 
 date_label = tk.Label(
-    text = "Please enter a past date you would like to buy Bitcoin on\n" "MM/DD/YY",
+    text = "Please enter a past date (up to 90 days ago) you would like to buy Bitcoin on\n" "MM/DD/YY",
     fg = "white",
     bg = "black",
     width =50,
@@ -145,6 +153,7 @@ button_for_date.grid(row = 3, column = 1)
 usd_amt_label.grid(row = 3, column = 0)
 entry_for_USD.grid(row = 4, column = 0)
 dca_button.grid(row= 4, column = 1)
+
 
 #button_for_USD.grid(row = 4, column = 1)
 
