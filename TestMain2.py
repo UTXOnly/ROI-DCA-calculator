@@ -80,11 +80,11 @@ def date_button():
         matching_price = sliced_close_price[date_index]
         entry_list.append(UserEntry(format_date, matching_price, entry_num, current, investment))
 
-    print(entry_list[(test_counter.count - 1)].price)
-    print(entry_list[(test_counter.count -1)].invest_amt)
+    """print(entry_list[(test_counter.count - 1)].price)
+    print(entry_list[(test_counter.count -1)].invest_amt)"""
     #print(sliced_close_price)
-    print(entry_list[(test_counter.count -1)].calculations())
-    print(entry_list[(test_counter.count - 1)].calc_roi())
+    entry_list[(test_counter.count -1)].calculations()
+    entry_list[(test_counter.count - 1)].calc_roi()
 
     results_label = tk.Label(
         text = '{}% Return on Investment\n ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0], entry_list[(test_counter.count - 1)].calc_roi()[1]),
@@ -200,9 +200,9 @@ def extract_close_prices(list_to_review):
     list_dates = list_to_review[0:-1:7]
 
     dates.append(list_dates)
-    print(len(list_to_review))
+    #print(len(list_to_review))
     list_close_price = list_to_review[4:-1:7]
-    print(list_close_price)
+    #print(list_close_price)
 
 
     return list_dates, list_close_price
@@ -230,7 +230,12 @@ def get_current_price():
     finished_price = float(almost_finished_price) // 100
     return finished_price
 
-def export_to_csv():
+def exportcsv(colnames, data):
+    with open('gradeswr.csv', 'w') as csvfile:
+        export_writer = csv.writer(csvfile)
+
+        export_writer.writerow(colnames)
+        export_writer.writerow(data)
 
 
 
