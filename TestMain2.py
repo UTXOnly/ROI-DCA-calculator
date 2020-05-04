@@ -1,4 +1,5 @@
 import tkinter as tk
+import csv
 window = tk.Tk()
 
 class UserEntry:
@@ -28,10 +29,13 @@ class UserEntry:
 entry_list = []
 sum_of_investment = 0
 current_value_investment = 0
+csv_title_rows = ["Entry Number", "Date Purchased", "Price Purchased", "Investment Amount", "Amount of Bitcoin",
+                  "Current Value", "Net Profit", "ROI"]
 
 
 
 def dca():
+    global sum_of_investment, current_value_investment
     if len(entry_list) > 1 :
         for entry in entry_list:
             global sum_of_investment, current_value_investment
@@ -143,6 +147,23 @@ entry_for_USD = tk.Entry(
     bg = "white",
     fg = "black",
     width = 30)
+def exportcsv():
+    with open('entries.csv', 'w') as csvfile:
+        export_writer = csv.writer(csvfile)
+
+        entry_nums = []
+        dates= []
+        purchase_prices = []
+
+        export_writer.writerow(csv_title_rows)
+        for entry in entry_list:
+            cated = [entry.entry_num,entry.date,entry.price,entry.invest_amt,entry.btc_amt, entry.current_value,entry.netprofit, entry.roi]
+
+
+            export_writer.writerow(cated)
+
+csv_button = tk.Button( text = "Export", command = exportcsv)
+
 
 
 # Layout for wigets
@@ -153,7 +174,7 @@ button_for_date.grid(row = 3, column = 1)
 usd_amt_label.grid(row = 3, column = 0)
 entry_for_USD.grid(row = 4, column = 0)
 dca_button.grid(row= 4, column = 1)
-
+csv_button.grid(row= 4, column = 2)
 
 #button_for_USD.grid(row = 4, column = 1)
 
@@ -230,12 +251,7 @@ def get_current_price():
     finished_price = float(almost_finished_price) // 100
     return finished_price
 
-def exportcsv(colnames, data):
-    with open('gradeswr.csv', 'w') as csvfile:
-        export_writer = csv.writer(csvfile)
 
-        export_writer.writerow(colnames)
-        export_writer.writerow(data)
 
 
 
