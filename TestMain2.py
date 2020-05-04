@@ -230,6 +230,7 @@ def get_current_price():
     finished_price = float(almost_finished_price) // 100
     return finished_price
 
+def export_to_csv():
 
 
 
