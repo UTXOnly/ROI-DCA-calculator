@@ -8,3 +8,5 @@ The program then scrapes historical price data from CoinMarketCap.com to determi
 
 The program will return the ROI expressed as a percentage and a dollar amount to the GUI. All of the data used in calculations will be exported to a csv file sot he user can save these scenarios and calculate gains if using the dollar cost averaging investment method. 
 
+To use this program enter a date into entry field, then an amount to invest. Press the calculate ROI button, you are encouraged to try out multiple entries. After you have a few entries, press the calculate DCA button to calculate your dollar cost averaging position. When you are done, press the export button to export all of your entries into a csv file.
+
