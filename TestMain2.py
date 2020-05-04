@@ -176,6 +176,7 @@ entry_for_USD.grid(row = 4, column = 0)
 dca_button.grid(row= 4, column = 1)
 csv_button.grid(row= 4, column = 2)
 
+
 #button_for_USD.grid(row = 4, column = 1)
 
 import bs4
