@@ -2,6 +2,7 @@ import tkinter as tk
 import csv
 window = tk.Tk()
 
+# Class where all entry data is stored
 class UserEntry:
     def __init__(self, date, price, entry_num, current_price, USD_amt):
         self.date = date
@@ -26,6 +27,7 @@ class UserEntry:
         return self.roi, self.netprofit
 
 
+#Master lists
 entry_list = []
 sum_of_investment = 0
 current_value_investment = 0
@@ -33,10 +35,10 @@ csv_title_rows = ["Entry Number", "Date Purchased", "Price Purchased", "Investme
                   "Current Value", "Net Profit", "ROI"]
 
 
-
+#DCA function
 def dca():
     global sum_of_investment, current_value_investment
-    if len(entry_list) > 1 :
+    if len(entry_list) > 0 :
         for entry in entry_list:
             global sum_of_investment, current_value_investment
             sum_of_investment += entry.invest_amt
@@ -48,19 +50,20 @@ def dca():
             height=5 )
             dca_label.grid(row = 5, column = 1)
 
+#Button to calculate DCA
 dca_button = tk.Button(text = "Calculate DCA Amount", command = dca)
 
 
 
-
+# Counter to calculate entry numbers
 class Counter:
     def __init__(self):
         self.count = 0
-
-
 test_counter = Counter()
 
 # Functions
+
+#Button to format date and collect data from entry boxes as well as create instances of USERENtry class
 def date_button():
     global format_date
     user_date = entrystuff.get()
@@ -84,9 +87,6 @@ def date_button():
         matching_price = sliced_close_price[date_index]
         entry_list.append(UserEntry(format_date, matching_price, entry_num, current, investment))
 
-    """print(entry_list[(test_counter.count - 1)].price)
-    print(entry_list[(test_counter.count -1)].invest_amt)"""
-    #print(sliced_close_price)
     entry_list[(test_counter.count -1)].calculations()
     entry_list[(test_counter.count - 1)].calc_roi()
 
@@ -129,8 +129,8 @@ entry_for_date = tk.Entry(
     fg = "black",
     width = 30)
 
-
-button_for_date = tk.Button(text = "Calculate", command = date_button)
+# Button to capture data from entry boxes and calculate ROI
+button_for_date = tk.Button(text = "Calculate ROI", command = date_button)
 
 
 usd_amt_label = tk.Label(
@@ -141,19 +141,17 @@ usd_amt_label = tk.Label(
     height = 3,
 )
 entry_usd = tk.IntVar()
-
+#Entry box for investment amount
 entry_for_USD = tk.Entry(
     textvariable = entry_usd,
     bg = "white",
     fg = "black",
     width = 30)
+
+#Function to export entries as csv
 def exportcsv():
     with open('entries.csv', 'w') as csvfile:
         export_writer = csv.writer(csvfile)
-
-        entry_nums = []
-        dates= []
-        purchase_prices = []
 
         export_writer.writerow(csv_title_rows)
         for entry in entry_list:
@@ -177,13 +175,14 @@ dca_button.grid(row= 4, column = 1)
 csv_button.grid(row= 4, column = 2)
 
 
-#button_for_USD.grid(row = 4, column = 1)
+
 
 import bs4
 import requests
 from bs4 import BeautifulSoup
 import time
 
+#Lists to help seperate data from tables
 
 rows_in_table = []
 cells_in_table = []
@@ -191,14 +190,7 @@ dates = []
 sliced_close_price = []
 
 
-
-def parsePrice():
-    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/')
-    soup = bs4.BeautifulSoup(r.text, features="html.parser")
-    # price = soup.find('div', {'class': 'cmc-details-panel-price__price'})
-    price = soup.find_all('div', {'class': 'cmc-details-panel-price jta9t4-0 fcilTk'})[0].find('span').text
-    return price
-
+# Function to import data from the table
 def import_table():
     r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20200201&end=20200501')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
@@ -216,19 +208,16 @@ def import_table():
                 if cell.text != 'Date':
                     cells_in_table.append(cell.text)
 
-
+#Extract prices and dates from lists
 def extract_close_prices(list_to_review):
     global list_dates, list_close_price, dates, sliced_close_price
     list_dates = list_to_review[0:-1:7]
 
     dates.append(list_dates)
-    #print(len(list_to_review))
     list_close_price = list_to_review[4:-1:7]
-    #print(list_close_price)
-
 
     return list_dates, list_close_price
-
+#appened master lists
 def append_master_lists():
     global list_dates, list_close_price
     for date in list_dates:
@@ -239,7 +228,7 @@ def append_master_lists():
         price_float = float(joined)
         sliced_close_price.append(price_float)
 
-
+#Function to get current price data
 def get_current_price():
     r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
@@ -252,28 +241,9 @@ def get_current_price():
     finished_price = float(almost_finished_price) // 100
     return finished_price
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 import_table()
 
 extract_close_prices(cells_in_table)
 append_master_lists()
-
-
-
-
-
-
 
 window.mainloop()
