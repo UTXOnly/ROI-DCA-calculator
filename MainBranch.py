@@ -180,7 +180,7 @@ csv_button.grid(row= 4, column = 2)
 import bs4
 import requests
 from bs4 import BeautifulSoup
-import time
+
 
 #Lists to help seperate data from tables
 

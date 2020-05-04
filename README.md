@@ -10,3 +10,7 @@ The program will return the ROI expressed as a percentage and a dollar amount to
 
 To use this program enter a date into entry field, then an amount to invest. Press the calculate ROI button, you are encouraged to try out multiple entries. After you have a few entries, press the calculate DCA button to calculate your dollar cost averaging position. When you are done, press the export button to export all of your entries into a csv file.
 
+To run this program you need to install the modules Tkinter, csv, bs4, and requests.
+
+I plan to continue working on this project, implementing an API or another method to scrape price data. I had difficulty finding a free API to use for historical price data. I also have teamed up with an adriod developer friend of mine to potentially turn this into an app!
+
