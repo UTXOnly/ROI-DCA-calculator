@@ -13,6 +13,7 @@ To use this program enter a date into entry field, then an amount to invest. Pre
 To run this program you need to install the modules Tkinter, csv, bs4, and requests. You can do that by using the install script. Open a terminal in the same directory and type:
 
 chmod +x install.sh
+
 ./install.sh
 
 
