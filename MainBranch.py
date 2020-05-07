@@ -1,5 +1,6 @@
 import tkinter as tk
 import csv
+import re
 window = tk.Tk()
 
 # Class where all entry data is stored
@@ -33,7 +34,8 @@ sum_of_investment = 0
 current_value_investment = 0
 csv_title_rows = ["Entry Number", "Date Purchased", "Price Purchased", "Investment Amount", "Amount of Bitcoin",
                   "Current Value", "Net Profit", "ROI"]
-
+real_close_price = []
+close_floats = []
 
 #DCA function
 def dca():
@@ -84,7 +86,7 @@ def date_button():
     investment = entry_usd.get()
     if format_date in dates:
         date_index = dates.index(format_date)
-        matching_price = sliced_close_price[date_index]
+        matching_price = close_floats[date_index]
         entry_list.append(UserEntry(format_date, matching_price, entry_num, current, investment))
 
     entry_list[(test_counter.count -1)].calculations()
@@ -177,6 +179,7 @@ csv_button.grid(row= 4, column = 2)
 
 
 
+
 import bs4
 import requests
 from bs4 import BeautifulSoup
@@ -188,11 +191,16 @@ rows_in_table = []
 cells_in_table = []
 dates = []
 sliced_close_price = []
+class RegexStuff():
+    def  __init__(self):
+        self.pattern = "[,]"
+        self.pattern2 = "[a-zA-Z]"
 
+regextool = RegexStuff()
 
 # Function to import data from the table
 def import_table():
-    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20200201&end=20200501')
+    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20130428&end=20200507')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
     table = soup.find('div', {'class': 'cmc-tab-historical-data ctxmt9-0 ASvFA'})
     rows = table.find_all('tr')
@@ -222,11 +230,11 @@ def append_master_lists():
     global list_dates, list_close_price
     for date in list_dates:
         dates.append(date)
-    for price in list_close_price:
+    """for price in list_close_price:
         split = price.split(',')
         joined = split[0] + split[1]
         price_float = float(joined)
-        sliced_close_price.append(price_float)
+        sliced_close_price.append(price_float)"""
 
 #Function to get current price data
 def get_current_price():
@@ -241,10 +249,38 @@ def get_current_price():
     finished_price = float(almost_finished_price) // 100
     return finished_price
 
+def get_close_price(list_to_review):
+    date = list_to_review.pop(0)
+    date2 = list_to_review.pop(0)
+    date3 = list_to_review.pop(0)
+    date4= list_to_review.pop(0)
+    close = list_to_review[0:-1:7]
+
+    """print(close)
+    print(cells_in_table)"""
+    real_close_price.append(close)
+    #print(real_close_price)
+i = 0
+def close_price_to_float(list_to_review):
+    global i
+    for cell in list_to_review:
+        for cell2 in cell:
+            if len(cell2) > 6:
+                split = cell2.split(',')
+                joined = split[0] + split[1]
+                price_float = float(joined)
+                close_floats.append(price_float)
+                print(price_float)
+            else:
+                small_float = float(cell2)
+                close_floats.append(small_float)
+
+
 import_table()
 
 extract_close_prices(cells_in_table)
-print(rows_in_table)
-append_master_lists()
 
+append_master_lists()
+get_close_price(cells_in_table)
+close_price_to_float(real_close_price)
 window.mainloop()
