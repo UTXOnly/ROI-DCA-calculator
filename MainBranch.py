@@ -45,7 +45,7 @@ def dca():
             global sum_of_investment, current_value_investment
             sum_of_investment += entry.invest_amt
             current_value_investment += entry.current_value
-            dca_label = tk.Label( text = 'The sum of your investments is ${}\n Which would now be worth ${}'.format(sum_of_investment, current_value_investment),
+            dca_label = tk.Label( text = 'The sum of your investments is ${}\n Which would now be worth ${:.2f}'.format(sum_of_investment, current_value_investment),
             fg="white",
             bg="black",
             width=50,
@@ -117,10 +117,11 @@ def date_button():
 greeting = tk.Label(text = "Welcome to Bitcoin ROI/DCA calculator")
 
 date_label = tk.Label(
-    text = "Please enter a past date (up to 90 days ago) you would like to buy Bitcoin on\n" "MM/DD/YY",
+    text = "Please enter a past date you would like to buy Bitcoin on\n"
+           "(back to may 2013)\n" "MM/DD/YY",
     fg = "white",
     bg = "black",
-    width =50,
+    width =80,
     height=3
 )
 entrystuff = tk.StringVar()
