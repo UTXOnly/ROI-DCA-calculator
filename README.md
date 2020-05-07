@@ -1,6 +1,6 @@
-# CIS153 Final Project
+
 ROI/DCA calculator for Bitcoin
-By Brian Hartford
+By NabismoPrimeTime
 
 This is a return on investment/dollar cost averaging calculator for Bitcoin. The user will interact with a graphical user interface, where they will enter a past date they would have purchased Bitcoin on as well as the dollar amount they would have spent. 
 
