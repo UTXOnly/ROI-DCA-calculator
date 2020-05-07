@@ -244,6 +244,7 @@ def get_current_price():
 import_table()
 
 extract_close_prices(cells_in_table)
+print(rows_in_table)
 append_master_lists()
 
 window.mainloop()

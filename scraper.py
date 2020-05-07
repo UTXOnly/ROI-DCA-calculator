@@ -1,13 +1,13 @@
 import bs4
 import requests
 from bs4 import BeautifulSoup
-import time
-from GUI import *
+
 
 rows_in_table = []
 cells_in_table = []
 dates = []
 sliced_close_price = []
+seperated_cells = []
 #imported_button_func =
 
 
@@ -19,21 +19,24 @@ def parsePrice():
     return price
 
 def import_table():
-    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20130428&end=20200501')
+    r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/?start=20130428&end=20200506')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
     table = soup.find('div', {'class': 'cmc-tab-historical-data ctxmt9-0 ASvFA'})
     rows = table.find_all('tr')
 
     global rows_in_table
     global cells_in_table
+    global seperated_cells
 
     for row in rows:
         if row != rows[0]:
             rows_in_table.append(row.text)
-        #print(row.text)
+
             for cell in row:
+                #print(cell.text)
                 if cell.text != 'Date':
                     cells_in_table.append(cell.text)
+
 
 
 def extract_close_prices(list_to_review):
@@ -63,6 +66,7 @@ import_table()
 
 extract_close_prices(cells_in_table)
 append_master_lists()
+print(sliced_close_price)
 
 #formatted_date = date_button()
 #print(formatted_date)
