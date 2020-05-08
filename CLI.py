@@ -219,7 +219,6 @@ close_price_to_float(real_close_price)
 
 print("Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n"+"Please use the MM/DD/YYYY format\n")
 date_input = input()
-print(date_input)
 print("Enter an amount you would like to invest in $USD")
 invest_amt = float(input())
 date_button()
@@ -227,5 +226,6 @@ print("Would you like to export these entries to a CSV file? yes or no")
 export_answer = input()
 if export_answer == "yes":
     exportcsv()
+    print("Your entries have been exported to entries.csv, look in this programs directory.")
 
 
