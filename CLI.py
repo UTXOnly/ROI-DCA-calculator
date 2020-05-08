@@ -2,7 +2,7 @@ import tkinter as tk
 import csv
 import re
 import django
-window = tk.Tk()
+
 
 # Class where all entry data is stored
 class UserEntry:
@@ -69,7 +69,7 @@ test_counter = Counter()
 #Button to format date and collect data from entry boxes as well as create instances of USERENtry class
 def date_button():
     global format_date
-    user_date = entrystuff.get()
+    user_date = date_input
     months = [ 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ]
     month_digits = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' ]
     month_seg = user_date[0:2]
@@ -84,7 +84,7 @@ def date_button():
     test_counter.count +=1
     entry_num = 'Entry number {}'.format(test_counter.count)
     current = get_current_price()
-    investment = entry_usd.get()
+    investment = invest_amt
     if format_date in dates:
         date_index = dates.index(format_date)
         matching_price = close_floats[date_index]
@@ -92,65 +92,10 @@ def date_button():
 
     entry_list[(test_counter.count -1)].calculations()
     entry_list[(test_counter.count - 1)].calc_roi()
-
-    results_label = tk.Label(
-        text = '{}% Return on Investment\n ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0], entry_list[(test_counter.count - 1)].calc_roi()[1]),
-        fg = "white",
-        bg = "black",
-        width=50,
-        height=3
-
-    )
-    results_label.grid(row = 6, column = 0)
-    results_summary = tk.Label(
-        text = 'If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(entry_list[(test_counter.count -1)].invest_amt,
-        entry_list[(test_counter.count -1)].date ,entry_list[(test_counter.count -1)].calculations()[0]),
-        fg="white",
-        bg="black",
-        width=50,
-        height=5
-    )
-
-    results_summary.grid(row= 5, column = 0)
+    print('If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(entry_list[(test_counter.count -1)].invest_amt,entry_list[(test_counter.count -1)].date ,entry_list[(test_counter.count -1)].calculations()[0]))
+    print('{}% Return on Investment\n ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0], entry_list[(test_counter.count - 1)].calc_roi()[1]))
 
 
-# Wigets
-greeting = tk.Label(text = "Welcome to Bitcoin ROI/DCA calculator")
-
-date_label = tk.Label(
-    text = "Please enter a past date you would like to buy Bitcoin on\n"
-           "From May 2013 on,\n" "MM/DD/YY",
-    fg = "white",
-    bg = "black",
-    width =80,
-    height=3
-)
-entrystuff = tk.StringVar()
-
-entry_for_date = tk.Entry(
-    textvariable = entrystuff,
-    bg = "white",
-    fg = "black",
-    width = 30)
-
-# Button to capture data from entry boxes and calculate ROI
-button_for_date = tk.Button(text = "Calculate ROI", command = date_button)
-
-
-usd_amt_label = tk.Label(
-    text = "Please enter a dollar amount you would like to invest",
-    fg = "white",
-    bg = "black",
-    width = 50,
-    height = 3,
-)
-entry_usd = tk.IntVar()
-#Entry box for investment amount
-entry_for_USD = tk.Entry(
-    textvariable = entry_usd,
-    bg = "white",
-    fg = "black",
-    width = 30)
 
 #Function to export entries as csv
 def exportcsv():
@@ -163,20 +108,6 @@ def exportcsv():
 
 
             export_writer.writerow(cated)
-
-csv_button = tk.Button( text = "Export", command = exportcsv)
-
-
-
-# Layout for wigets
-greeting.grid(row = 0, column = 0)
-date_label.grid(row = 1, column = 0)
-entry_for_date.grid(row = 2, column =0)
-button_for_date.grid(row = 3, column = 1)
-usd_amt_label.grid(row = 3, column = 0)
-entry_for_USD.grid(row = 4, column = 0)
-dca_button.grid(row= 4, column = 1)
-csv_button.grid(row= 4, column = 2)
 
 
 
@@ -285,4 +216,16 @@ extract_close_prices(cells_in_table)
 append_master_lists()
 get_close_price(cells_in_table)
 close_price_to_float(real_close_price)
-window.mainloop()
+
+print("Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n"+"Please use the MM/DD/YYYY format\n")
+date_input = input()
+print("Enter an amount you would like to invest in $USD")
+invest_amt = float(input())
+date_button()
+print("Would you like to export these entries to a CSV file? yes or no")
+export_answer = input()
+if export_answer == "yes":
+    exportcsv()
+    print("Your entries have been exported to entries.csv, look in this programs directory.")
+
+
