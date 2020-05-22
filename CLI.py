@@ -232,10 +232,8 @@ def run_cycle():
     print("Enter an amount you would like to invest in $USD")
     invest_amt = float(input())
     date_button()
-    print('Would you like to make another calculation?')
-    another_calc = input()
-    if another_calc == 'yes' or another_calc == 'Yes':
-        run_cycle()
+    menu()
+
 
 
 import_table()
@@ -245,24 +243,24 @@ extract_close_prices(cells_in_table)
 append_master_lists()
 get_close_price(cells_in_table)
 close_price_to_float(real_close_price)
-"""print("Would you like to make a ROI calculation? yes or no")
-elect_yes = input()
+def menu():
 
-if elect_yes == 'yes' or elect_yes == 'Yes':
-  run_cycle()"""
+    print("What would you like to do?")
+    print("1.Make ROI calculation",
+          "\n2.Export results to csv"
+          "\n3.Exit")
+    entry = int(input())
+    if entry == 1:
+        run_cycle()
+    if entry == 2:
+        exportcsv()
+    if entry == 3:
+        exit()
 
-print(
-    "Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n" + "Please use the MM/DD/YYYY format\n")
-date_input = input()
-print("Enter an amount you would like to invest in $USD")
-invest_amt = float(input())
-date_button()
-print('Would you like to make another calculation?')
-another_calc = input()
-if another_calc == 'yes' or another_calc == 'Yes':
-    run_cycle()
-elif another_calc == 'no' or another_calc == 'No':
-    print("Would you like to export these entries to a CSV file? yes or no")
+
+menu()
+
+
 export_answer = input()
 if export_answer == "yes":
     exportcsv()
