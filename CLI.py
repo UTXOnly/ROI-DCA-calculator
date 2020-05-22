@@ -99,7 +99,7 @@ def date_button():
     print('If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(
         entry_list[(test_counter.count - 1)].invest_amt, entry_list[(test_counter.count - 1)].date,
         entry_list[(test_counter.count - 1)].calculations()[0]))
-    print('{}% Return on Investment\n ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0],
+    print('This would yie1ld you {}% Return on Investment\n ROI = ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0],
                                                       entry_list[(test_counter.count - 1)].calc_roi()[1]))
 
 
@@ -254,6 +254,7 @@ def menu():
         run_cycle()
     if entry == 2:
         exportcsv()
+        print("Your entries have been exported to entries.csv, look in this programs directory.")
     if entry == 3:
         exit()
 
@@ -264,7 +265,7 @@ menu()
 export_answer = input()
 if export_answer == "yes":
     exportcsv()
-    print("Your entries have been exported to entries.csv, look in this programs directory.")
+
     print("Thank you for trying this calculator, DCA menu coming to CLI soon.")
 
 
