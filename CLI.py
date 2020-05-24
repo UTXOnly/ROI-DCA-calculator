@@ -1,7 +1,5 @@
 import tkinter as tk
 import csv
-import re
-import django
 
 
 # Class where all entry data is stored
@@ -14,14 +12,14 @@ class UserEntry:
         self.invest_amt = USD_amt
 
     def __str__(self):
-        return ('{} : {} : {} : {}'.format(self.entry_num,self.date, self.price, self.invest_amt))
+        return ('{} : {} : {} : {}'.format(self.entry_num, self.date, self.price, self.invest_amt))
 
     def calculations(self):
         amt_of_BTC = float('{:.8f}'.format(float(self.invest_amt) / self.price))
         current_value_of_investment = float('{:.2f}'.format(amt_of_BTC * self.current_price))
         self.btc_amt = amt_of_BTC
         self.current_value = current_value_of_investment
-        return amt_of_BTC, current_value_of_investment
+        return self.btc_amt, self.current_value
 
     def calc_roi(self):
         self.netprofit = self.current_value - self.invest_amt
@@ -29,7 +27,7 @@ class UserEntry:
         return self.roi, self.netprofit
 
 
-#Master lists
+# Master lists
 entry_list = []
 sum_of_investment = 0
 current_value_investment = 0
@@ -38,50 +36,55 @@ csv_title_rows = ["Entry Number", "Date Purchased", "Price Purchased", "Investme
 real_close_price = []
 close_floats = []
 
-#DCA function
+
+# DCA function
 def dca():
     global sum_of_investment, current_value_investment
-    if len(entry_list) > 0 :
+    if len(entry_list) > 0:
         for entry in entry_list:
             global sum_of_investment, current_value_investment
             sum_of_investment += entry.invest_amt
             current_value_investment += entry.current_value
-            dca_label = tk.Label( text = 'The sum of your investments is ${}\n Which would now be worth ${:.2f}'.format(sum_of_investment, current_value_investment),
-            fg="white",
-            bg="black",
-            width=50,
-            height=5 )
-            dca_label.grid(row = 5, column = 1)
+            dca_label = tk.Label(
+                text='The sum of your investments is ${}\n Which would now be worth ${:.2f}'.format(sum_of_investment,
+                                                                                                    current_value_investment),
+                fg="white",
+                bg="black",
+                width=50,
+                height=5)
+            dca_label.grid(row=5, column=1)
 
-#Button to calculate DCA
-dca_button = tk.Button(text = "Calculate DCA Amount", command = dca)
 
+# Button to calculate DCA
+dca_button = tk.Button(text="Calculate DCA Amount", command=dca)
 
 
 # Counter to calculate entry numbers
 class Counter:
     def __init__(self):
         self.count = 0
+
+
 test_counter = Counter()
+
 
 # Functions
 
-#Button to format date and collect data from entry boxes as well as create instances of USERENtry class
+# Button to format date and collect data from entry boxes as well as create instances of USERENtry class
 def date_button():
     global format_date
     user_date = date_input
-    months = [ 'Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ]
-    month_digits = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12' ]
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    month_digits = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
     month_seg = user_date[0:2]
 
     date_seg = user_date[3:5]
     year_seg = user_date[6:10]
 
-
     place_holder = month_digits.index(month_seg)
     month_code = months[place_holder]
     format_date = '{} {}, {}'.format(month_code, date_seg, year_seg)
-    test_counter.count +=1
+    test_counter.count += 1
     entry_num = 'Entry number {}'.format(test_counter.count)
     current = get_current_price()
     investment = invest_amt
@@ -90,46 +93,56 @@ def date_button():
         matching_price = close_floats[date_index]
         entry_list.append(UserEntry(format_date, matching_price, entry_num, current, investment))
 
-    entry_list[(test_counter.count -1)].calculations()
-    entry_list[(test_counter.count - 1)].calc_roi()
-    print('If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(entry_list[(test_counter.count -1)].invest_amt,entry_list[(test_counter.count -1)].date ,entry_list[(test_counter.count -1)].calculations()[0]))
-    print('{}% Return on Investment\n ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0], entry_list[(test_counter.count - 1)].calc_roi()[1]))
+        entry_list[(test_counter.count - 1)].calculations()
+        entry_list[(test_counter.count - 1)].calc_roi()
+        print('*****************************************************')
+        print('If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(
+        entry_list[(test_counter.count - 1)].invest_amt, entry_list[(test_counter.count - 1)].date,
+        entry_list[(test_counter.count - 1)].calculations()[0]))
+        print('This would currently be worth ${}'.format(entry_list[(test_counter.count -1)].calculations()[1]))
+        print('This would yield you {}% Return on Investment\n ROI = ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0],
+                                                      entry_list[(test_counter.count - 1)].calc_roi()[1]
+                                                ))
+    else:
+        print("Please enter a valid date")
+        run_cycle()
+        pass
 
 
 
-#Function to export entries as csv
+# Function to export entries as csv
 def exportcsv():
     with open('entries.csv', 'w') as csvfile:
         export_writer = csv.writer(csvfile)
 
         export_writer.writerow(csv_title_rows)
         for entry in entry_list:
-            cated = [entry.entry_num,entry.date,entry.price,entry.invest_amt,entry.btc_amt, entry.current_value,entry.netprofit, entry.roi]
-
+            cated = [entry.entry_num, entry.date, entry.price, entry.invest_amt, entry.btc_amt, entry.current_value,
+                     entry.netprofit, entry.roi]
 
             export_writer.writerow(cated)
-
-
-
 
 
 import bs4
 import requests
 from bs4 import BeautifulSoup
 
-
-#Lists to help seperate data from tables
+# Lists to help seperate data from tables
 
 rows_in_table = []
 cells_in_table = []
 dates = []
 sliced_close_price = []
+
+
 class RegexStuff():
-    def  __init__(self):
+    def __init__(self):
         self.pattern = "[,]"
         self.pattern2 = "[a-zA-Z]"
 
+
 regextool = RegexStuff()
+
 
 # Function to import data from the table
 def import_table():
@@ -144,12 +157,13 @@ def import_table():
     for row in rows:
         if row != rows[0]:
             rows_in_table.append(row.text)
-        #print(row.text)
+            # print(row.text)
             for cell in row:
                 if cell.text != 'Date':
                     cells_in_table.append(cell.text)
 
-#Extract prices and dates from lists
+
+# Extract prices and dates from lists
 def extract_close_prices(list_to_review):
     global list_dates, list_close_price, dates, sliced_close_price
     list_dates = list_to_review[0:-1:7]
@@ -158,7 +172,9 @@ def extract_close_prices(list_to_review):
     list_close_price = list_to_review[4:-1:7]
 
     return list_dates, list_close_price
-#appened master lists
+
+
+# appened master lists
 def append_master_lists():
     global list_dates, list_close_price
     for date in list_dates:
@@ -169,11 +185,11 @@ def append_master_lists():
         price_float = float(joined)
         sliced_close_price.append(price_float)"""
 
-#Function to get current price data
+
+# Function to get current price data
 def get_current_price():
     r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
-    # price = soup.find('div', {'class': 'cmc-details-panel-price__price'})
     price = soup.find('div', {'class': 'cmc-details-panel-price jta9t4-0 fcilTk'}).find('span').text
     almost_finished_price = ''
     for char in price:
@@ -182,18 +198,22 @@ def get_current_price():
     finished_price = float(almost_finished_price) // 100
     return finished_price
 
+
 def get_close_price(list_to_review):
     date = list_to_review.pop(0)
     date2 = list_to_review.pop(0)
     date3 = list_to_review.pop(0)
-    date4= list_to_review.pop(0)
+    date4 = list_to_review.pop(0)
     close = list_to_review[0:-1:7]
 
-    """print(close)
-    print(cells_in_table)"""
+
     real_close_price.append(close)
-    #print(real_close_price)
+    # print(real_close_price)
+
+
 i = 0
+
+
 def close_price_to_float(list_to_review):
     global i
     for cell in list_to_review:
@@ -209,6 +229,20 @@ def close_price_to_float(list_to_review):
                 close_floats.append(small_float)
 
 
+def run_cycle():
+    global date_input, invest_amt
+    print(
+        "Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n" + "Please use the MM/DD/YYYY format\n")
+    date_input = input()
+
+
+    print("Enter an amount you would like to invest in $ USD")
+    invest_amt = float(input())
+    date_button()
+    menu()
+
+
+
 import_table()
 
 extract_close_prices(cells_in_table)
@@ -217,15 +251,35 @@ append_master_lists()
 get_close_price(cells_in_table)
 close_price_to_float(real_close_price)
 
-print("Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n"+"Please use the MM/DD/YYYY format\n")
-date_input = input()
-print("Enter an amount you would like to invest in $USD")
-invest_amt = float(input())
-date_button()
-print("Would you like to export these entries to a CSV file? yes or no")
+#Menu for CLI
+def menu():
+    print('***************************************************************')
+    print("What would you like to do?", "\nPlease enter a number from the list below")
+    print("[1] Make ROI calculation",
+          "\n[2] Export results to csv"
+          "\n[3] Exit")
+    entry = int(input())
+    if entry == 1:
+        run_cycle()
+    if entry == 2:
+        exportcsv()
+        print("Your entries have been exported to entries.csv, look in this programs directory.")
+    if entry == 3:
+        print("Thank you for trying this calculator, DCA function coming to CLI soon.")
+        exit()
+
+
+menu()
+
+
 export_answer = input()
 if export_answer == "yes":
     exportcsv()
-    print("Your entries have been exported to entries.csv, look in this programs directory.")
+
+    print("Thank you for trying this calculator, DCA function coming to CLI soon.")
+
+
+
+
 
 
