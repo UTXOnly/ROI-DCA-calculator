@@ -1,6 +1,5 @@
 import tkinter as tk
 import csv
-import re
 
 
 # Class where all entry data is stored
@@ -20,7 +19,7 @@ class UserEntry:
         current_value_of_investment = float('{:.2f}'.format(amt_of_BTC * self.current_price))
         self.btc_amt = amt_of_BTC
         self.current_value = current_value_of_investment
-        return amt_of_BTC, current_value_of_investment
+        return self.btc_amt, self.current_value
 
     def calc_roi(self):
         self.netprofit = self.current_value - self.invest_amt
@@ -94,13 +93,21 @@ def date_button():
         matching_price = close_floats[date_index]
         entry_list.append(UserEntry(format_date, matching_price, entry_num, current, investment))
 
-    entry_list[(test_counter.count - 1)].calculations()
-    entry_list[(test_counter.count - 1)].calc_roi()
-    print('If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(
+        entry_list[(test_counter.count - 1)].calculations()
+        entry_list[(test_counter.count - 1)].calc_roi()
+        print('*****************************************************')
+        print('If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(
         entry_list[(test_counter.count - 1)].invest_amt, entry_list[(test_counter.count - 1)].date,
         entry_list[(test_counter.count - 1)].calculations()[0]))
-    print('This would yie1ld you {}% Return on Investment\n ROI = ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0],
-                                                      entry_list[(test_counter.count - 1)].calc_roi()[1]))
+        print('This would currently be worth ${}'.format(entry_list[(test_counter.count -1)].calculations()[1]))
+        print('This would yield you {}% Return on Investment\n ROI = ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0],
+                                                      entry_list[(test_counter.count - 1)].calc_roi()[1]
+                                                ))
+    else:
+        print("Please enter a valid date")
+        run_cycle()
+        pass
+
 
 
 # Function to export entries as csv
@@ -183,7 +190,6 @@ def append_master_lists():
 def get_current_price():
     r = requests.get('https://coinmarketcap.com/currencies/bitcoin/historical-data/')
     soup = bs4.BeautifulSoup(r.text, features="html.parser")
-    # price = soup.find('div', {'class': 'cmc-details-panel-price__price'})
     price = soup.find('div', {'class': 'cmc-details-panel-price jta9t4-0 fcilTk'}).find('span').text
     almost_finished_price = ''
     for char in price:
@@ -200,8 +206,7 @@ def get_close_price(list_to_review):
     date4 = list_to_review.pop(0)
     close = list_to_review[0:-1:7]
 
-    """print(close)
-    print(cells_in_table)"""
+
     real_close_price.append(close)
     # print(real_close_price)
 
@@ -229,7 +234,9 @@ def run_cycle():
     print(
         "Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n" + "Please use the MM/DD/YYYY format\n")
     date_input = input()
-    print("Enter an amount you would like to invest in $USD")
+
+
+    print("Enter an amount you would like to invest in $ USD")
     invest_amt = float(input())
     date_button()
     menu()
@@ -244,11 +251,11 @@ append_master_lists()
 get_close_price(cells_in_table)
 close_price_to_float(real_close_price)
 def menu():
-
-    print("What would you like to do?")
-    print("1.Make ROI calculation",
-          "\n2.Export results to csv"
-          "\n3.Exit")
+    print('***************************************************************')
+    print("What would you like to do?", "\nPlease enter a number from the list below")
+    print("[1] Make ROI calculation",
+          "\n[2] Export results to csv"
+          "\n[3] Exit")
     entry = int(input())
     if entry == 1:
         run_cycle()
@@ -256,6 +263,7 @@ def menu():
         exportcsv()
         print("Your entries have been exported to entries.csv, look in this programs directory.")
     if entry == 3:
+        print("Thank you for trying this calculator, DCA menu coming to CLI soon.")
         exit()
 
 
