@@ -250,6 +250,8 @@ extract_close_prices(cells_in_table)
 append_master_lists()
 get_close_price(cells_in_table)
 close_price_to_float(real_close_price)
+
+#Menu for CLI
 def menu():
     print('***************************************************************')
     print("What would you like to do?", "\nPlease enter a number from the list below")
@@ -263,7 +265,7 @@ def menu():
         exportcsv()
         print("Your entries have been exported to entries.csv, look in this programs directory.")
     if entry == 3:
-        print("Thank you for trying this calculator, DCA menu coming to CLI soon.")
+        print("Thank you for trying this calculator, DCA function coming to CLI soon.")
         exit()
 
 
@@ -274,7 +276,7 @@ export_answer = input()
 if export_answer == "yes":
     exportcsv()
 
-    print("Thank you for trying this calculator, DCA menu coming to CLI soon.")
+    print("Thank you for trying this calculator, DCA function coming to CLI soon.")
 
 
 
