@@ -99,7 +99,7 @@ def date_button():
         print('If you invested ${:.2f} on {},\n that would buy you {} Bitcoin'.format(
         entry_list[(test_counter.count - 1)].invest_amt, entry_list[(test_counter.count - 1)].date,
         entry_list[(test_counter.count - 1)].calculations()[0]))
-        print('This would currently be worth ${}'.format(entry_list[(test_counter.count -1)].calculations()[1]))
+        print('This would currently be worth ${:.2f}'.format(entry_list[(test_counter.count -1)].calculations()[1]))
         print('This would yield you {}% Return on Investment\n ROI = ${:.2f}'.format(entry_list[(test_counter.count - 1)].calc_roi()[0],
                                                       entry_list[(test_counter.count - 1)].calc_roi()[1]
                                                 ))
@@ -107,7 +107,21 @@ def date_button():
         print("Please enter a valid date")
         run_cycle()
         pass
+#Format date function
+def format_date():
+    global format_date2
+    user_date = date_input
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    month_digits = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']
+    month_seg = user_date[0:2]
 
+    date_seg = user_date[3:5]
+    year_seg = user_date[6:10]
+
+    place_holder = month_digits.index(month_seg)
+    month_code = months[place_holder]
+    format_date2 = '{} {}, {}'.format(month_code, date_seg, year_seg)
+    return format_date2
 
 
 # Function to export entries as csv
@@ -231,15 +245,20 @@ def close_price_to_float(list_to_review):
 
 def run_cycle():
     global date_input, invest_amt
+    print("*********************************************************")
     print(
-        "Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n" + "Please use the MM/DD/YYYY format\n")
+        "Please enter a date in the past that you would like to buy Bitcoin, anytime after May 2013\n" + "Please use the MM/DD/YYYY format include slashes\n")
     date_input = input()
+    format_date()
+    if format_date2 in dates:
+        print("Enter number of $ USD you would like to invest")
+        invest_amt = float(input())
+        date_button()
+        menu()
+    else:
+        print("**Please enter a valid date using the format listed, include slashes**", "\nExample 04/15/2015")
+        run_cycle()
 
-
-    print("Enter an amount you would like to invest in $ USD")
-    invest_amt = float(input())
-    date_button()
-    menu()
 
 
 
@@ -272,11 +291,7 @@ def menu():
 menu()
 
 
-export_answer = input()
-if export_answer == "yes":
-    exportcsv()
 
-    print("Thank you for trying this calculator, DCA function coming to CLI soon.")
 
 
 
